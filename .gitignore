@@ -1,0 +1,6 @@
+Makefile
+*.o
+qaircrack
+qrc_*
+moc_*
+ui_*
