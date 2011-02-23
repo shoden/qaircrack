@@ -16,6 +16,7 @@
 
 enum action{
     waiting,
+    updatingWlanList,
     monitorInit,
     monitorUp,
     monitorDown,
@@ -46,7 +47,7 @@ public:
     void bash(const QString &);
 
 public slots:
-    void myInterfaceInfo();
+    void updateWlanList();
     void toggleMonitor();
     void list();
     void capture();

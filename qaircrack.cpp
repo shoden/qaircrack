@@ -17,8 +17,6 @@ QAircrack::QAircrack(QWidget *parent) :
     listingProc = new QProcess();
 
     connect(ui->monitorButton, SIGNAL(clicked()), this, SLOT(toggleMonitor()));
-
-    connect(ui->myInterfaceButton, SIGNAL(clicked()), this, SLOT(myInterfaceInfo()));
     connect(ui->listButton, SIGNAL(clicked()), this, SLOT(list()));
     connect(ui->captureButton, SIGNAL(clicked()), this, SLOT(capture()));
     connect(ui->authButton, SIGNAL(clicked()), this, SLOT(authenticate()));
@@ -31,14 +29,23 @@ QAircrack::QAircrack(QWidget *parent) :
     connect(proc,SIGNAL(finished(int,QProcess::ExitStatus)),this,SLOT(processFinished(int,QProcess::ExitStatus)) );
 
     proc->setProcessChannelMode(QProcess::MergedChannels);
+    ui->myInterface->setInsertPolicy(QComboBox::InsertAtBottom);
+    updateWlanList();
 }
 
 void QAircrack::readFromStdout()
 {
     QString output = proc->readAllStandardOutput().data();
     QRegExp reg;
+    QStringList list;
 
     switch(_action){
+    case updatingWlanList:
+        list = output.split("\n", QString::SkipEmptyParts);
+        foreach (QString wlan, list)
+            if(!wlan.contains("mon"))
+                ui->myInterface->insertItem(ui->myInterface->count(), wlan);
+        break;
     case waiting:
         qDebug() << "Stdout during waiting";
         break;
@@ -119,6 +126,9 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
     // Ok
     else{
         switch(_action){
+        case updatingWlanList:
+            _action = waiting;
+            break;
         case waiting:
             qDebug() << "Process finished during waiting";
             break;
@@ -155,11 +165,6 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
     qDebug() << "Exit code:" << exitCode;
 }
 
-void QAircrack::myInterfaceInfo()
-{
-    bash("iwconfig");
-}
-
 QAircrack::~QAircrack()
 {
     delete ui;
@@ -183,7 +188,7 @@ void QAircrack::bash(const QString &s)
 void QAircrack::initMonitor()
 {
     _action = monitorInit;
-    proc->start(QString("bash/mac %1").arg(ui->myInterface->text()));
+    proc->start(QString("bash/mac %1").arg(ui->myInterface->currentText()));
 }
 
 void QAircrack::startMonitor()
@@ -200,7 +205,7 @@ void QAircrack::startMonitor()
     // Start monitor
     ui->myMonitor->clear();
     _action = monitorUp;
-    proc->start(QString("sudo airmon-ng start %1").arg(ui->myInterface->text()));
+    proc->start(QString("sudo airmon-ng start %1").arg(ui->myInterface->currentText()));
 }
 
 void QAircrack::stopMonitor()
@@ -228,6 +233,13 @@ void QAircrack::stopMonitor()
     system("sudo service network-manager start");
     system("sudo service avahi-daemon start");
     system("nm-applet --sm-disable &");
+}
+
+void QAircrack::updateWlanList()
+{
+    ui->myInterface->clear();
+    _action = updatingWlanList;
+    proc->start("bash/wlans");
 }
 
 void QAircrack::list()

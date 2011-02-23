@@ -523,13 +523,6 @@ clave</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="myInterface">
-        <property name="text">
-         <string>wlan0</string>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_12">
         <property name="enabled">
@@ -564,29 +557,10 @@ clave</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QPushButton" name="myInterfaceButton">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>25</width>
-          <height>25</height>
-         </size>
-        </property>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="myInterface">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/help.png</normaloff>:/icons/icons/help.png</iconset>
-        </property>
-        <property name="flat">
-         <bool>true</bool>
         </property>
        </widget>
       </item>
