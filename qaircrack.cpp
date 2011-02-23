@@ -220,6 +220,7 @@ void QAircrack::stopMonitor()
 
     // Stop current monitors
     _action = monitorDown;
+    ui->myMonitor->clear();
     proc->start("bash/stopmonitors");
 
     // Resume problematic processes
