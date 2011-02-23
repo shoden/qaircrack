@@ -72,7 +72,7 @@ void QAircrack::readFromStdout()
 
 void QAircrack::readFromStdErr()
 {
-    cout << "Error:" << proc->readAllStandardError().data() << endl;
+    qDebug() << "Error:" << proc->readAllStandardError().data();
 }
 
 void QAircrack::processError(QProcess::ProcessError e)
@@ -180,7 +180,7 @@ void QAircrack::toggleMonitor()
 
 void QAircrack::bash(const QString &s)
 {
-    QString command = QString("gnome-terminal -x /home/juan/bin/helper.sh %1 &").arg(s);
+    QString command = QString("gnome-terminal -x bash/terminal %1 &").arg(s);
     qDebug() << "bash:" << command;
     system( command.toUtf8().data() );
 }

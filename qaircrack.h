@@ -5,7 +5,6 @@
 #include <QDesktopWidget>
 #include <QMessageBox>
 #include <QProcess>
-#include <iostream>
 #include <QDebug>
 #include <QRegExp>
 #include <QDir>
@@ -26,10 +25,6 @@ enum action{
     inyecting,
     cracking
 };
-
-using namespace std;
-
-#define BASH_HELPER "/home/juan/bin/helper.sh"
 
 namespace Ui {
     class QAircrack;
