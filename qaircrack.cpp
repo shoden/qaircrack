@@ -203,7 +203,7 @@ void QAircrack::startMonitor()
     system("bash/stopmonitors");
 
     // Start monitor
-    ui->myMonitor->clear();
+    ui->myMonitor->setText("");
     _action = monitorUp;
     proc->start(QString("sudo airmon-ng start %1").arg(ui->myInterface->currentText()));
 }
@@ -225,8 +225,8 @@ void QAircrack::stopMonitor()
 
     // Stop current monitors
     _action = monitorDown;
-    ui->myMac->clear();
-    ui->myMonitor->clear();
+    ui->myMac->setText("");
+    ui->myMonitor->setText("");
     proc->start("bash/stopmonitors");
 
     // Resume problematic processes
@@ -247,7 +247,7 @@ void QAircrack::list()
     QString command = QString("gnome-terminal -e \"sudo airodump-ng %1\"").arg(ui->myMonitor->text());
     qDebug() << command;
 
-    if(listing){
+    if(listing == true){
         QMessageBox::warning(this, "Aviso", QString::fromUtf8("Ya hay un terminal abierto listando las redes."));
     }
     else{
@@ -261,10 +261,9 @@ void QAircrack::list()
 
 void QAircrack::capture()
 {
-    if(listing){
+    if(listing == true){
         listingProc->kill();
         listing = false;
-        qDebug() << "Parando listado";
     }
 
     _action = capturing;
