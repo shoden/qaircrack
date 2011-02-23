@@ -6,7 +6,7 @@ QAircrack::QAircrack(QWidget *parent) :
     ui(new Ui::QAircrack)
 {
     ui->setupUi(this);
-    setFixedSize(width(), height());
+    //setFixedSize(width(), height());
     QDesktopWidget desk;
     move( (desk.width()/2) - (width()/2), (desk.height()/2) - (height()/2));
 
@@ -131,6 +131,7 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
             else{
                 qDebug() << "monitor=true";
                 ui->monitorButton->setIcon(QIcon("icons/monitor-on.png"));
+                ui->monitorLabel->setText("Desactivar\nmonitor");
                 monitor = true;
                 _action = waiting;
                 ui->listButton->setEnabled(true);
@@ -139,6 +140,7 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
             break;
         case monitorDown: // Monitor stopped
             ui->monitorButton->setIcon(QIcon("icons/monitor-off.png"));
+            ui->monitorLabel->setText("Activar\nmonitor");
             monitor = false;
             _action = waiting;
             break;
@@ -278,4 +280,14 @@ void QAircrack::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void QAircrack::closeEvent(QCloseEvent *e)
+{
+    if(monitor){
+        QMessageBox::warning(this, "Cerrar", QString::fromUtf8("Desactiva el monitor antes de cerrar esta aplicación."));
+        e->ignore();
+    }
+    else
+        e->accept();
 }

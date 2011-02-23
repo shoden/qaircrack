@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QRegExp>
 #include <QDir>
+#include <QCloseEvent>
 
 #define CAPTURE_FILE "tawapo"
 
@@ -59,6 +60,7 @@ signals:
 
 protected:
     void changeEvent(QEvent *e);
+    void closeEvent(QCloseEvent *e);
 
 private:
     Ui::QAircrack *ui;
