@@ -1,0 +1,11 @@
+#!/bin/bash
+
+n=$(iwconfig | grep '^mon'| wc -l)
+
+while [ $n -gt 0 ]; do
+  let n=$n-1
+  sudo airmon-ng stop mon$n
+done
+
+exit 0
+

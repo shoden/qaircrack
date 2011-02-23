@@ -4,3 +4,7 @@ qaircrack
 qrc_*
 moc_*
 ui_*
+*.cap
+*.csv
+*.netxml
+*.user*

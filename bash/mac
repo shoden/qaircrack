@@ -1,0 +1,12 @@
+#!/bin/bash
+
+[ $# -gt 0 ] || exit 1
+
+mac=$(ip link show $1 | awk '/ether/ {print $2}')
+
+if [ "$mac" != "" ]; then
+  echo $mac
+  exit 0
+else
+  exit 1
+fi

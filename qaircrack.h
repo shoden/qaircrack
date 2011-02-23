@@ -2,20 +2,22 @@
 #define QAIRCRACK_H
 
 #include <QWidget>
+#include <QDesktopWidget>
 #include <QMessageBox>
 #include <QProcess>
 #include <iostream>
 #include <QDebug>
+#include <QRegExp>
 
 enum action{
     waiting,
-    wifiInfo,
-    startMonitor,
+    monitorInit,
+    monitorUp,
     list,
-    capture,
-    authenticate,
-    inyect,
-    key
+    capturing,
+    authenticating,
+    inyecting,
+    cracking
 };
 
 using namespace std;
@@ -32,13 +34,14 @@ public:
     QAircrack(QWidget *parent = 0);
     ~QAircrack();
 
-    bool startMonitor();
-    bool stopMonitor();
+    void initMonitor();
+    void startMonitor();
+    void stopMonitor();
     void bash(const QString &);
 
 public slots:
     void myInterfaceInfo();
-    void init();
+    void toggleMonitor();
     void list();
     void capture();
     void authenticate();

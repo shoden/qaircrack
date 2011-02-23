@@ -70,6 +70,15 @@
           <height>48</height>
          </size>
         </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item row="0" column="2">
@@ -117,6 +126,9 @@
           <width>48</width>
           <height>48</height>
          </size>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -432,7 +444,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="myInterface"/>
+       <widget class="QLineEdit" name="myInterface">
+        <property name="text">
+         <string>wlan0</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_12">
@@ -509,7 +525,7 @@
       <bool>false</bool>
      </property>
      <property name="checkable">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="checked">
       <bool>false</bool>
@@ -523,7 +539,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="apName"/>
+       <widget class="QLineEdit" name="apName">
+        <property name="text">
+         <string>cedepe</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_9">
@@ -533,7 +553,11 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QLineEdit" name="apMac"/>
+       <widget class="QLineEdit" name="apMac">
+        <property name="text">
+         <string>00:23:CD:CE:5A:9A</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_10">
@@ -543,7 +567,11 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QLineEdit" name="apChannel"/>
+       <widget class="QLineEdit" name="apChannel">
+        <property name="text">
+         <string>6</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
