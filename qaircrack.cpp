@@ -6,7 +6,16 @@ QAircrack::QAircrack(QWidget *parent) :
     ui(new Ui::QAircrack)
 {
     ui->setupUi(this);
-    //setFixedSize(width(), height());
+
+    ui->monitorButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/monitor-on.png"));
+    ui->listButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/listar.png"));
+    ui->captureButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/capturar.png"));
+    ui->authButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/autenticar.png"));
+    ui->inyectButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/inyectar.png"));
+    ui->keyButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/clave.png"));
+    setWindowIcon(QIcon("/usr/share/pixmaps/qaircrack.png"));
+
+    setFixedSize(width(), height());
     QDesktopWidget desk;
     move( (desk.width()/2) - (width()/2), (desk.height()/2) - (height()/2));
 
@@ -15,6 +24,8 @@ QAircrack::QAircrack(QWidget *parent) :
     _action = waiting;
     proc = new QProcess();
     listingProc = new QProcess();
+    capDir.setPath(QDir::homePath().append("/capturas"));
+    capFile = capDir.absolutePath().append("/captura");
 
     connect(ui->monitorButton, SIGNAL(clicked()), this, SLOT(toggleMonitor()));
     connect(ui->listButton, SIGNAL(clicked()), this, SLOT(list()));
@@ -142,7 +153,7 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
             }
             else{
                 qDebug() << "monitor=true";
-                ui->monitorButton->setIcon(QIcon("icons/monitor-on.png"));
+                ui->monitorButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/monitor-on.png"));
                 ui->monitorLabel->setText("Desactivar\nmonitor");
                 monitor = true;
                 _action = waiting;
@@ -151,7 +162,7 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
             }
             break;
         case monitorDown: // Monitor stopped
-            ui->monitorButton->setIcon(QIcon("icons/monitor-off.png"));
+            ui->monitorButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/monitor-off.png"));
             ui->monitorLabel->setText("Activar\nmonitor");
             monitor = false;
             _action = waiting;
@@ -180,7 +191,7 @@ void QAircrack::toggleMonitor()
 
 void QAircrack::bash(const QString &s)
 {
-    QString command = QString("gnome-terminal -x bash/terminal %1 &").arg(s);
+    QString command = QString("gnome-terminal -x qaircrack_terminal %1 &").arg(s);
     qDebug() << "bash:" << command;
     system( command.toUtf8().data() );
 }
@@ -188,7 +199,7 @@ void QAircrack::bash(const QString &s)
 void QAircrack::initMonitor()
 {
     _action = monitorInit;
-    proc->start(QString("bash/mac %1").arg(ui->myInterface->currentText()));
+    proc->start(QString("qaircrack_mac %1").arg(ui->myInterface->currentText()));
 }
 
 void QAircrack::startMonitor()
@@ -200,7 +211,7 @@ void QAircrack::startMonitor()
     system("killall -9 nm-applet");
 
     // Stop current monitors
-    system("bash/stopmonitors");
+    system("qaircrack_stopmonitors");
 
     // Start monitor
     ui->myMonitor->setText("");
@@ -227,7 +238,7 @@ void QAircrack::stopMonitor()
     _action = monitorDown;
     ui->myMac->setText("");
     ui->myMonitor->setText("");
-    proc->start("bash/stopmonitors");
+    proc->start("qaircrack_stopmonitors");
 
     // Resume problematic processes
     system("sudo service network-manager start");
@@ -239,38 +250,56 @@ void QAircrack::updateWlanList()
 {
     ui->myInterface->clear();
     _action = updatingWlanList;
-    proc->start("bash/wlans");
+    proc->start("qaircrack_wlans");
 }
 
 void QAircrack::list()
 {
     QString command = QString("gnome-terminal -e \"sudo airodump-ng %1\"").arg(ui->myMonitor->text());
-    qDebug() << command;
 
     if(listing == true){
         QMessageBox::warning(this, "Aviso", QString::fromUtf8("Ya hay un terminal abierto listando las redes."));
     }
     else{
+        qDebug() << command;
         listing = true;
         listingProc->start(command);
+        connect(listingProc,SIGNAL(finished(int)),this,SLOT(listingFlag()));
         ui->apGroup->setEnabled(true);
         ui->captureButton->setEnabled(true);
         ui->captureLabel->setEnabled(true);
     }
 }
 
+void QAircrack::listingFlag()
+{
+    qDebug() << "Bajando bandera";
+    listing = false;
+}
+
 void QAircrack::capture()
 {
     if(listing == true){
+        qDebug() << "Capturar: no!";
         listingProc->kill();
         listing = false;
-    }
+    };
+  //  else{
+        qDebug() << "Capturar: si!";
+        // Prepare directory
+        if(capDir.exists())
+            system( QString("sudo rm -fR %1").arg(capDir.absolutePath()).toUtf8().data() );
 
-    _action = capturing;
-    QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(CAPTURE_FILE);
-    bash( command );
-    ui->authButton->setEnabled(true);
-    ui->authLabel->setEnabled(true);
+        if(!capDir.mkdir(capDir.absolutePath()))
+            QMessageBox::critical(this, "Error", "No se pudo crear el directorio para guardar las capturas.");
+
+        // Start capturing
+        _action = capturing;
+        QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(capFile);
+        bash( command );
+        ui->authButton->setEnabled(true);
+        ui->authLabel->setEnabled(true);
+   // }
 }
 
 void QAircrack::authenticate()
@@ -295,7 +324,7 @@ void QAircrack::key()
 {
     _action = cracking;
     QString f = QDir::homePath().append("/Escritorio/").append(ui->apName->text());
-    QString command = QString("aircrack-ng -e %1 -b %2 %3 -l %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(QString("%1*.cap").arg(CAPTURE_FILE)).arg(f);
+    QString command = QString("aircrack-ng -e %1 -b %2 %3 -l %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(QString("%1*.cap").arg(capFile)).arg(f);
     bash( command );
     qDebug() << command;
 }

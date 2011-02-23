@@ -13,10 +13,6 @@
   <property name="windowTitle">
    <string>QAircrack</string>
   </property>
-  <property name="windowIcon">
-   <iconset resource="graphics.qrc">
-    <normaloff>:/icons/icons/qaircrack.png</normaloff>:/icons/icons/qaircrack.png</iconset>
-  </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0" colspan="2">
     <widget class="QFrame" name="frame">
@@ -27,47 +23,6 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="monitorButton">
-        <property name="minimumSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>64</width>
-          <height>64</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/monitor-off.png</normaloff>:/icons/icons/monitor-off.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="flat">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="4">
        <widget class="QPushButton" name="listButton">
         <property name="enabled">
@@ -90,10 +45,6 @@
         </property>
         <property name="text">
          <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/listar.png</normaloff>:/icons/icons/listar.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -129,10 +80,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/capturar.png</normaloff>:/icons/icons/capturar.png</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>48</width>
@@ -163,10 +110,6 @@
         </property>
         <property name="text">
          <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/autenticar.png</normaloff>:/icons/icons/autenticar.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -199,10 +142,6 @@
         <property name="text">
          <string/>
         </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/inyectar.png</normaloff>:/icons/icons/inyectar.png</iconset>
-        </property>
         <property name="iconSize">
          <size>
           <width>48</width>
@@ -233,10 +172,6 @@
         </property>
         <property name="text">
          <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="graphics.qrc">
-          <normaloff>:/icons/icons/clave.png</normaloff>:/icons/icons/clave.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -498,6 +433,43 @@ clave</string>
         </property>
        </spacer>
       </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="monitorButton">
+        <property name="minimumSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>64</width>
+          <height>64</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>48</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -639,8 +611,6 @@ clave</string>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources>
-  <include location="graphics.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

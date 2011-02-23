@@ -11,8 +11,6 @@
 #include <QCloseEvent>
 #include <QPixmap>
 
-#define CAPTURE_FILE "tawapo"
-
 enum action{
     waiting,
     updatingWlanList,
@@ -53,7 +51,7 @@ public slots:
     void readFromStdErr();
     void processError(QProcess::ProcessError);
     void processFinished(int,QProcess::ExitStatus);
-signals:
+    void listingFlag();
 
 protected:
     void changeEvent(QEvent *e);
@@ -70,6 +68,9 @@ private:
     QString _mon;
     QString _mac;
     action _action;
+
+    QDir capDir;
+    QString capFile;
 };
 
 #endif // QAIRCRACK_H
