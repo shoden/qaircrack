@@ -8,11 +8,15 @@
 #include <iostream>
 #include <QDebug>
 #include <QRegExp>
+#include <QDir>
+
+#define CAPTURE_FILE "tawapo"
 
 enum action{
     waiting,
     monitorInit,
     monitorUp,
+    monitorDown,
     list,
     capturing,
     authenticating,
@@ -47,11 +51,11 @@ public slots:
     void authenticate();
     void inyect();
     void key();
-
     void readFromStdout();
     void readFromStdErr();
     void processError(QProcess::ProcessError);
     void processFinished(int,QProcess::ExitStatus);
+signals:
 
 protected:
     void changeEvent(QEvent *e);

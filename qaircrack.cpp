@@ -37,6 +37,9 @@ void QAircrack::readFromStdout()
     QRegExp reg;
 
     switch(_action){
+    case waiting:
+        qDebug() << "Stdout during waiting";
+        break;
     case monitorInit:
         _mac = output;
         ui->myMac->setText(_mac);
@@ -47,9 +50,12 @@ void QAircrack::readFromStdout()
             ui->myMonitor->setText( output.trimmed().replace(")","").split(" ").last() );
             ui->listButton->setEnabled(true);
             ui->listLabel->setEnabled(true);
-            _action = waiting;
         }
         break;
+    case monitorDown:
+        qDebug() << "Stdout during monitorDown:" << output;
+        break;
+
     default:
         qDebug() << "Wrong action!";
     }
@@ -71,6 +77,9 @@ void QAircrack::processError(QProcess::ProcessError e)
     case monitorUp:
         msg = QString::fromUtf8("No se pudo iniciar el monitor.");
         break;
+    case monitorDown:
+        msg = QString::fromUtf8("No se pudo parar el monitor.");
+        break;
     default:
         qDebug() << "Wrong action!";
     };
@@ -83,7 +92,7 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
     QString msg;
 
     if(exitStatus == QProcess::CrashExit)
-        qDebug() << "Exit status:" << exitStatus;
+        qDebug() << "Crash!";
 
     // Error
     if(exitCode != 0){
@@ -94,6 +103,10 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
         case monitorInit: // Interface info error
             ui->myMac->setText("");
             msg = QString::fromUtf8("La interfaz no es correcta.");
+            break;
+
+        case monitorUp: // Monitor start error
+            msg = "No se pudo iniciar el monitor";
             break;
 
         default:
@@ -108,8 +121,6 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
             qDebug() << "Process finished during waiting";
             break;
         case monitorInit: // Interface info retrieved
-            ui->listButton->setEnabled(true);
-            ui->listLabel->setEnabled(true);
             _action = monitorUp;
             startMonitor();
             break;
@@ -118,8 +129,18 @@ void QAircrack::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
                 QMessageBox::critical(this, "Error", "No se pudo iniciar el monitor");
             }
             else{
-
+                qDebug() << "monitor=true";
+                ui->monitorButton->setIcon(QIcon("icons/monitor-on.png"));
+                monitor = true;
+                _action = waiting;
+                ui->listButton->setEnabled(true);
+                ui->listLabel->setEnabled(true);
             }
+            break;
+        case monitorDown: // Monitor stopped
+            ui->monitorButton->setIcon(QIcon("icons/monitor-off.png"));
+            monitor = false;
+            _action = waiting;
             break;
 
         default:
@@ -163,7 +184,7 @@ void QAircrack::initMonitor()
 
 void QAircrack::startMonitor()
 {
-    // Kill problematica processes
+    // Kill problematic processes
     system("sudo service network-manager stop");
     system("sudo service avahi-daemon stop");
     system("sudo killall -9 wpa_supplicant");
@@ -180,14 +201,27 @@ void QAircrack::startMonitor()
 
 void QAircrack::stopMonitor()
 {
-    // Stop current monitors
-    system("bash/stopmonitors");
+    // Disable controls
+    ui->listButton->setEnabled(false);
+    ui->listLabel->setEnabled(false);
+    ui->captureButton->setEnabled(false);
+    ui->captureLabel->setEnabled(false);
+    ui->authButton->setEnabled(false);
+    ui->authLabel->setEnabled(false);
+    ui->inyectButton->setEnabled(false);
+    ui->inyectLabel->setEnabled(false);
+    ui->keyButton->setEnabled(false);
+    ui->keyLabel->setEnabled(false);
+    ui->apGroup->setEnabled(false);
 
-    system("sudo airmon-ng stop mon0");
+    // Stop current monitors
+    _action = monitorDown;
+    proc->start("bash/stopmonitors");
+
+    // Resume problematic processes
     system("sudo service network-manager start");
     system("sudo service avahi-daemon start");
-    system("sudo /sbin/wpa_supplicant -u -s");
-    system("nm-applet --sm-disable");
+    system("nm-applet --sm-disable &");
 }
 
 void QAircrack::list()
@@ -201,7 +235,7 @@ void QAircrack::list()
 void QAircrack::capture()
 {
     _action = capturing;
-    QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg("ficherito");
+    QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(CAPTURE_FILE);
     bash( command );
     ui->authButton->setEnabled(true);
     ui->authLabel->setEnabled(true);
@@ -228,8 +262,10 @@ void QAircrack::inyect()
 void QAircrack::key()
 {
     _action = cracking;
-    QString command = QString("aircrack-ng -e %1 -b %2 %3").arg(ui->apName->text()).arg(ui->apMac->text()).arg("ficherito*.cap");
+    QString f = QDir::homePath().append("/Escritorio/").append(ui->apName->text());
+    QString command = QString("aircrack-ng -e %1 -b %2 %3 -l %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(QString("%1*.cap").arg(CAPTURE_FILE)).arg(f);
     bash( command );
+    qDebug() << command;
 }
 
 void QAircrack::changeEvent(QEvent *e)
