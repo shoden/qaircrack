@@ -10,6 +10,7 @@
 #include <QRegExp>
 #include <QDir>
 #include <QCloseEvent>
+#include <QPixmap>
 
 #define CAPTURE_FILE "tawapo"
 
@@ -65,7 +66,9 @@ protected:
 private:
     Ui::QAircrack *ui;
     bool monitor;
+    bool listing;
     QProcess *proc;
+    QProcess *listingProc;
 
     QString _wlan;
     QString _mon;

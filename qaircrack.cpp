@@ -11,8 +11,10 @@ QAircrack::QAircrack(QWidget *parent) :
     move( (desk.width()/2) - (width()/2), (desk.height()/2) - (height()/2));
 
     monitor = false;
+    listing = false;
     _action = waiting;
     proc = new QProcess();
+    listingProc = new QProcess();
 
     connect(ui->monitorButton, SIGNAL(clicked()), this, SLOT(toggleMonitor()));
 
@@ -228,14 +230,29 @@ void QAircrack::stopMonitor()
 
 void QAircrack::list()
 {
-    bash(QString("sudo airodump-ng %1").arg(ui->myMonitor->text()));
-    ui->apGroup->setEnabled(true);
-    ui->captureButton->setEnabled(true);
-    ui->captureLabel->setEnabled(true);
+    QString command = QString("gnome-terminal -e \"sudo airodump-ng %1\"").arg(ui->myMonitor->text());
+    qDebug() << command;
+
+    if(listing){
+        QMessageBox::warning(this, "Aviso", QString::fromUtf8("Ya hay un terminal abierto listando las redes."));
+    }
+    else{
+        listing = true;
+        listingProc->start(command);
+        ui->apGroup->setEnabled(true);
+        ui->captureButton->setEnabled(true);
+        ui->captureLabel->setEnabled(true);
+    }
 }
 
 void QAircrack::capture()
 {
+    if(listing){
+        listingProc->kill();
+        listing = false;
+        qDebug() << "Parando listado";
+    }
+
     _action = capturing;
     QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(CAPTURE_FILE);
     bash( command );
