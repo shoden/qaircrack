@@ -259,7 +259,7 @@ void QAircrack::updateWlanList()
 
 void QAircrack::list()
 {
-    QString command = QString("gnome-terminal --geometry 90x25 -e \"sudo airodump-ng %1\"").arg(ui->myMonitor->text());
+    QString command = QString("gnome-terminal --geometry 90x25 -e \"sudo airodump-ng -t OPN -t WEP %1\"").arg(ui->myMonitor->text());
 
     if(listing == true){
         QMessageBox::warning(this, "Aviso", QString::fromUtf8("Ya hay un terminal abierto listando las redes."));
