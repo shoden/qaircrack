@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>599</width>
-    <height>288</height>
+    <height>292</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -460,7 +460,7 @@ clave</string>
          </size>
         </property>
         <property name="checkable">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="checked">
          <bool>false</bool>

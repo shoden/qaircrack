@@ -7,7 +7,7 @@ QAircrack::QAircrack(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->monitorButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/monitor-on.png"));
+    ui->monitorButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/monitor-off.png"));
     ui->listButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/listar.png"));
     ui->captureButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/capturar.png"));
     ui->authButton->setIcon(QIcon("/usr/share/pixmaps/qaircrack/autenticar.png"));
@@ -189,9 +189,9 @@ void QAircrack::toggleMonitor()
         stopMonitor();
 }
 
-void QAircrack::bash(const QString &s)
+void QAircrack::bash(const QString &s, const QString &title)
 {
-    QString command = QString("gnome-terminal -x qaircrack_terminal %1 &").arg(s);
+    QString command = QString("gnome-terminal -t \"%1\" -x qaircrack_terminal %2 &").arg(title).arg(s);
     qDebug() << "bash:" << command;
     system( command.toUtf8().data() );
 }
@@ -212,6 +212,9 @@ void QAircrack::startMonitor()
 
     // Stop current monitors
     system("qaircrack_stopmonitors");
+
+    // Change MAC address
+   // system(QString("sudo macchanger -r %1").arg(ui->myInterface->currentText()).toUtf8().data());
 
     // Start monitor
     ui->myMonitor->setText("");
@@ -296,7 +299,7 @@ void QAircrack::capture()
         // Start capturing
         _action = capturing;
         QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(capFile);
-        bash( command );
+        bash( command, "Capturar" );
         ui->authButton->setEnabled(true);
         ui->authLabel->setEnabled(true);
    // }
@@ -306,7 +309,7 @@ void QAircrack::authenticate()
 {
     _action = authenticating;
     QString command = QString("sudo aireplay-ng -1 0 -e %1 -a %2 -h %3 %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(_mac.trimmed()).arg(ui->myMonitor->text());
-    bash( command );
+    bash( command, "Autenticar" );
     ui->inyectButton->setEnabled(true);
     ui->inyectLabel->setEnabled(true);
 }
@@ -315,7 +318,7 @@ void QAircrack::inyect()
 {
     _action = inyecting;
     QString command = QString("sudo aireplay-ng -3 -b %2 -h %3 %4").arg(ui->apMac->text()).arg(_mac.trimmed()).arg(ui->myMonitor->text());
-    bash( command );
+    bash( command, "Inyectar" );
     ui->keyButton->setEnabled(true);
     ui->keyLabel->setEnabled(true);
 }
@@ -325,7 +328,7 @@ void QAircrack::key()
     _action = cracking;
     QString f = QDir::homePath().append("/Escritorio/").append(ui->apName->text());
     QString command = QString("aircrack-ng -e %1 -b %2 %3 -l %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(QString("%1*.cap").arg(capFile)).arg(f);
-    bash( command );
+    bash( command, "Obtener clave" );
     qDebug() << command;
 }
 
