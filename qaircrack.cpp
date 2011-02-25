@@ -189,9 +189,10 @@ void QAircrack::toggleMonitor()
         stopMonitor();
 }
 
-void QAircrack::bash(const QString &s, const QString &title)
+void QAircrack::bash(const QString &s, const QString &title, const QString &geometry="")
 {
-    QString command = QString("gnome-terminal -t \"%1\" -x qaircrack_terminal %2 &").arg(title).arg(s);
+    QString size=(geometry=="") ? "" : QString("--geometry ").append(geometry);
+    QString command = QString("gnome-terminal %1 -t \"%2\" -x qaircrack_terminal %3 &").arg(size).arg(title).arg(s);
     qDebug() << "bash:" << command;
     system( command.toUtf8().data() );
 }
@@ -258,7 +259,7 @@ void QAircrack::updateWlanList()
 
 void QAircrack::list()
 {
-    QString command = QString("gnome-terminal -e \"sudo airodump-ng %1\"").arg(ui->myMonitor->text());
+    QString command = QString("gnome-terminal --geometry 90x25 -e \"sudo airodump-ng %1\"").arg(ui->myMonitor->text());
 
     if(listing == true){
         QMessageBox::warning(this, "Aviso", QString::fromUtf8("Ya hay un terminal abierto listando las redes."));
@@ -299,7 +300,7 @@ void QAircrack::capture()
         // Start capturing
         _action = capturing;
         QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(capFile);
-        bash( command, "Capturar" );
+        bash( command, "Capturar", "90x14" );
         ui->authButton->setEnabled(true);
         ui->authLabel->setEnabled(true);
    // }

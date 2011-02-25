@@ -37,7 +37,7 @@ public:
     void initMonitor();
     void startMonitor();
     void stopMonitor();
-    void bash(const QString &,const QString &);
+    void bash(const QString &,const QString &,const QString &);
 
 public slots:
     void updateWlanList();
