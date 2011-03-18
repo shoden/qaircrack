@@ -299,7 +299,7 @@ void QAircrack::capture()
 
         // Start capturing
         _action = capturing;
-        QString command = QString("sudo airodump-ng %1 -c %2 --bssid %3 -w %4").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(capFile);
+        QString command = QString("sudo airodump-ng %1 -c %2 --bssid '%3' -w '%4'").arg(ui->myMonitor->text()).arg(ui->apChannel->text()).arg(ui->apMac->text()).arg(capFile);
         bash( command, "Capturar", "90x14" );
         ui->authButton->setEnabled(true);
         ui->authLabel->setEnabled(true);
@@ -309,7 +309,7 @@ void QAircrack::capture()
 void QAircrack::authenticate()
 {
     _action = authenticating;
-    QString command = QString("sudo aireplay-ng -1 0 -e %1 -a %2 -h %3 %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(_mac.trimmed()).arg(ui->myMonitor->text());
+    QString command = QString("sudo aireplay-ng -1 0 -e '%1' -a '%2' -h '%3' %4").arg(ui->apName->text()).arg(ui->apMac->text()).arg(_mac.trimmed()).arg(ui->myMonitor->text());
     bash( command, "Autenticar" );
     ui->inyectButton->setEnabled(true);
     ui->inyectLabel->setEnabled(true);
@@ -318,7 +318,7 @@ void QAircrack::authenticate()
 void QAircrack::inyect()
 {
     _action = inyecting;
-    QString command = QString("sudo aireplay-ng -3 -b %2 -h %3 %4").arg(ui->apMac->text()).arg(_mac.trimmed()).arg(ui->myMonitor->text());
+    QString command = QString("sudo aireplay-ng -3 -b '%2' -h '%3' %4").arg(ui->apMac->text()).arg(_mac.trimmed()).arg(ui->myMonitor->text());
     bash( command, "Inyectar" );
     ui->keyButton->setEnabled(true);
     ui->keyLabel->setEnabled(true);
