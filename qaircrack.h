@@ -71,6 +71,7 @@ private:
 
     QDir capDir;
     QString capFile;
+    int ret;
 };
 
 #endif // QAIRCRACK_H

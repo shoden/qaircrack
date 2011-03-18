@@ -194,7 +194,7 @@ void QAircrack::bash(const QString &s, const QString &title, const QString &geom
     QString size=(geometry=="") ? "" : QString("--geometry ").append(geometry);
     QString command = QString("gnome-terminal %1 -t \"%2\" -x qaircrack_terminal %3 &").arg(size).arg(title).arg(s);
     qDebug() << "bash:" << command;
-    system( command.toUtf8().data() );
+    ret = system( command.toUtf8().data() );
 }
 
 void QAircrack::initMonitor()
@@ -206,16 +206,16 @@ void QAircrack::initMonitor()
 void QAircrack::startMonitor()
 {
     // Kill problematic processes
-    system("sudo service network-manager stop");
-    system("sudo service avahi-daemon stop");
-    system("sudo killall -9 wpa_supplicant");
-    system("killall -9 nm-applet");
+    ret = system("sudo service network-manager stop");
+    ret = system("sudo service avahi-daemon stop");
+    ret = system("sudo killall -9 wpa_supplicant");
+    ret = system("killall -9 nm-applet");
 
     // Stop current monitors
-    system("qaircrack_stopmonitors");
+    ret = system("qaircrack_stopmonitors");
 
     // Change MAC address
-   // system(QString("sudo macchanger -r %1").arg(ui->myInterface->currentText()).toUtf8().data());
+   // ret = system(QString("sudo macchanger -r %1").arg(ui->myInterface->currentText()).toUtf8().data());
 
     // Start monitor
     ui->myMonitor->setText("");
@@ -245,9 +245,9 @@ void QAircrack::stopMonitor()
     proc->start("qaircrack_stopmonitors");
 
     // Resume problematic processes
-    system("sudo service network-manager start");
-    system("sudo service avahi-daemon start");
-    system("nm-applet --sm-disable &");
+    ret = system("sudo service network-manager start");
+    ret = system("sudo service avahi-daemon start");
+    ret = system("nm-applet --sm-disable &");
 }
 
 void QAircrack::updateWlanList()
@@ -292,7 +292,7 @@ void QAircrack::capture()
         qDebug() << "Capturar: si!";
         // Prepare directory
         if(capDir.exists())
-            system( QString("sudo rm -fR %1").arg(capDir.absolutePath()).toUtf8().data() );
+            ret = system( QString("sudo rm -fR %1").arg(capDir.absolutePath()).toUtf8().data() );
 
         if(!capDir.mkdir(capDir.absolutePath()))
             QMessageBox::critical(this, "Error", "No se pudo crear el directorio para guardar las capturas.");
