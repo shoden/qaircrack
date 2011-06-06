@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Aircrack
+GenericName=Aircrack
+X-GNOME-FullName=Aircrack
+Comment=Buscador de claves wifi
+Exec=qaircrack
+Icon=qaircrack
+Terminal=false
+Type=Application
+Categories=Network;
+Name[es_ES]=qaircrack.desktop

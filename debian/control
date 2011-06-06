@@ -1,0 +1,13 @@
+Source: qaircrack
+Section: x11
+Priority: extra
+Maintainer: Juan Roldan Ruiz <juan@shoden.es>
+Build-Depends: debhelper (>= 7), cmake, libqt4-dev
+Standards-Version: 3.8.4
+Homepage: http://www.shoden.es
+
+Package: qaircrack
+Architecture: any
+Depends: aircrack-ng, ${shlibs:Depends}, ${misc:Depends}
+Description: Buscardor de claves wifi
+ Buscardor de claves wifi.
