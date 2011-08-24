@@ -9,3 +9,4 @@ ui_*
 *.netxml
 *.user*
 deb/
+build
