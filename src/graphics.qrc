@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/pixmaps">
+        <file>pixmaps/autenticar.png</file>
+        <file>pixmaps/clave.png</file>
+        <file>pixmaps/inyectar.png</file>
+        <file>pixmaps/listar.png</file>
+        <file>pixmaps/monitor-off.png</file>
+        <file>pixmaps/monitor-on.png</file>
+        <file>pixmaps/capturar.png</file>
+        <file>pixmaps/help.png</file>
+        <file>pixmaps/qaircrack.png</file>
+    </qresource>
+</RCC>

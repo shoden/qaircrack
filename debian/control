@@ -1,13 +1,24 @@
 Source: qaircrack
-Section: x11
-Priority: extra
+Section: net
+Priority: optional
 Maintainer: Juan Roldan Ruiz <juan@shoden.es>
 Build-Depends: debhelper (>= 7), cmake, libqt4-dev
 Standards-Version: 3.8.4
-Homepage: http://www.shoden.es
+Homepage: https://github.com/jroldan/qaircrack
 
 Package: qaircrack
 Architecture: any
 Depends: aircrack-ng, ${shlibs:Depends}, ${misc:Depends}
-Description: Buscardor de claves wifi
- Buscardor de claves wifi.
+Description: Simple Qt4 frontend for Aircrack-ng (WEP only).
+ Cracking process is splitted into these steps:
+   1. Toggle monitor mode
+   2. list available APs
+   3. Choose AP and capture only from it
+   4. Fake authentication
+   5. Inyection
+   6. Get password
+ .
+ QAircrack GUI has one button for each of the previous steps so the 
+ user must click on button at a time in order to retrieve the password.
+ .
+ Further info: https://github.com/jroldan/qaircrack

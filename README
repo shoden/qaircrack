@@ -9,8 +9,8 @@ DESCRIPTION
     5. Inyection
     6. Get password
 
-  QAircrack UI has one button for each of the previous steps so the 
-  user must click on button at a time.
+  QAircrack GUI has one button for each of the previous steps so the 
+  user must click on button at a time in order to retrieve the password.
 
 COMPILATION DEPENDENCIES
   Qt4 development libraries

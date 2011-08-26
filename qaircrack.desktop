@@ -1,11 +1,11 @@
 [Desktop Entry]
-Name=Aircrack
-GenericName=Aircrack
-X-GNOME-FullName=Aircrack
-Comment=Buscador de claves wifi
+Name=QAircrack
+GenericName=QAircrack
+X-GNOME-FullName=QAircrack
 Exec=qaircrack
 Icon=qaircrack
 Terminal=false
 Type=Application
 Categories=Network;
-Name[es_ES]=qaircrack.desktop
+Comment=Simple frontend for Aircrack-ng
+Comment[es_ES]=Interfaz gráfica sencilla para Aircrack-ng

@@ -19,6 +19,7 @@
 
 TARGET = qaircrack
 TEMPLATE = app
+SUBDIRS = src
 SOURCES += main.cpp \
     qaircrack.cpp
 HEADERS += qaircrack.h
