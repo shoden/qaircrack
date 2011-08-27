@@ -1,8 +1,11 @@
-- Translate everything to english
-- Find trouble processes (network managers, etc.) in a cleaner way
+- Translate everything into English
+- Find problematic processes (network manager, etc.) in a cleaner way
 - WPA support
 - Fix bug: bad command syntaxis when AP name has spaces
 - Profiles: each AP has a profile in order to store its configuration
   and its cap files in a separate directory so capturings can be restored
 - i18n
 - Qt paths for icons instead of absolute paths (usr/share/)
+- APs clickable listing: user shouldn't write anything, just click!
+- Add option: Repeat fake authentication {once, 30sec, 1min, 2min, 5min}
+- Open terminals inside Qt GUI
