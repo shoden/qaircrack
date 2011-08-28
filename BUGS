@@ -1,1 +1,3 @@
 - Bad command syntaxis when AP name has spaces
+- Wireless network interface is not recognized in Ubuntu 11.04
+  (It works correctly in Debian Squeeze)
