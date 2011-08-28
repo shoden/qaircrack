@@ -9,6 +9,7 @@ Homepage: https://github.com/jroldan/qaircrack
 Package: qaircrack
 Architecture: any
 Depends: aircrack-ng, ${shlibs:Depends}, ${misc:Depends}
+Suggests: macchanger
 Description: Simple Qt4 frontend for Aircrack-ng (WEP only).
  Cracking process is splitted into these steps:
    1. Toggle monitor mode
