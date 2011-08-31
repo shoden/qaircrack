@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Juan Roldan Ruiz <juan@shoden.es>
 Build-Depends: debhelper (>= 7), cmake, libqt4-dev
 Standards-Version: 3.8.4
-Homepage: https://github.com/jroldan/qaircrack
+Homepage: https://github.com/shoden/qaircrack
 
 Package: qaircrack
 Architecture: any
@@ -22,4 +22,4 @@ Description: Simple Qt4 frontend for Aircrack-ng (WEP only).
  QAircrack GUI has one button for each of the previous steps so the 
  user must click on button at a time in order to retrieve the password.
  .
- Further info: https://github.com/jroldan/qaircrack
+ Further info: https://github.com/shoden/qaircrack
